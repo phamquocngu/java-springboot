@@ -1,0 +1,19 @@
+server:
+  port: 8000
+
+jwt:
+  secret: Glorfindel
+  expiration: 604800000
+
+spring:
+  datasource:
+    url: jdbc:h2:mem:testdb
+    driverClassName: org.h2.Driver
+    username: sa
+    password:
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+  # Enabling H2 Console
+  h2:
+    console:
+      enabled: true
