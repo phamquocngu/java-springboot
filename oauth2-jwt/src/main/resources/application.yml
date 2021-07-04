@@ -11,6 +11,7 @@ spring:
 #      validation-query: SELECT 1
 #    initialization-mode: never
 #    platform: mysql
+##JPA configuration##
   jpa:
     properties:
       hibernate:
@@ -19,5 +20,8 @@ spring:
       naming:
         physical-strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
       ddl-auto: update
-
+##Liquibase configuration##
+  liquibase:
+    change-log: classpath:/db/changelog/changelog-master.xml
+##Configuration Other##
 check-user-scopes: true
