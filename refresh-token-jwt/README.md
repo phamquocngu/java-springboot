@@ -26,103 +26,140 @@ Related Posts:
 
 > [For MongoDB](https://bezkoder.com/spring-boot-jwt-auth-mongodb/)
 
-## Fullstack Authentication
-
-> [Spring Boot + Vue.js JWT Authentication](https://bezkoder.com/spring-boot-vue-js-authentication-jwt-spring-security/)
-
-> [Spring Boot + Angular 8 JWT Authentication](https://bezkoder.com/angular-spring-boot-jwt-auth/)
-
-> [Spring Boot + Angular 10 JWT Authentication](https://bezkoder.com/angular-10-spring-boot-jwt-auth/)
-
-> [Spring Boot + Angular 11 JWT Authentication](https://bezkoder.com/angular-11-spring-boot-jwt-auth/)
-
-> [Spring Boot + React JWT Authentication](https://bezkoder.com/spring-boot-react-jwt-auth/)
-
-## Fullstack CRUD App
-
-> [Vue.js + Spring Boot + MySQL/PostgreSQL example](https://bezkoder.com/spring-boot-vue-js-crud-example/)
-
-> [Angular 8 + Spring Boot + MySQL example](https://bezkoder.com/angular-spring-boot-crud/)
-
-> [Angular 8 + Spring Boot + PostgreSQL example](https://bezkoder.com/angular-spring-boot-postgresql/)
-
-> [Angular 10 + Spring Boot + MySQL example](https://bezkoder.com/angular-10-spring-boot-crud/)
-
-> [Angular 10 + Spring Boot + PostgreSQL example](https://bezkoder.com/angular-10-spring-boot-postgresql/)
-
-> [Angular 11 + Spring Boot + MySQL example](https://bezkoder.com/angular-11-spring-boot-crud/)
-
-> [Angular 11 + Spring Boot + PostgreSQL example](https://bezkoder.com/angular-11-spring-boot-postgresql/)
-
-> [React + Spring Boot + MySQL example](https://bezkoder.com/react-spring-boot-crud/)
-
-> [React + Spring Boot + PostgreSQL example](https://bezkoder.com/spring-boot-react-postgresql/)
-
-> [React + Spring Boot + MongoDB example](https://bezkoder.com/react-spring-boot-mongodb/)
-
-Run both Back-end & Front-end in one place:
-> [Integrate Angular with Spring Boot Rest API](https://bezkoder.com/integrate-angular-spring-boot/)
-
-> [Integrate React.js with Spring Boot Rest API](https://bezkoder.com/integrate-reactjs-spring-boot/)
-
-> [Integrate Vue.js with Spring Boot Rest API](https://bezkoder.com/integrate-vue-spring-boot/)
-
-## More Practice:
-> [Spring Boot File upload example with Multipart File](https://bezkoder.com/spring-boot-file-upload/)
-
-> [Exception handling: @RestControllerAdvice example in Spring Boot](https://bezkoder.com/spring-boot-restcontrolleradvice/)
-
-> [Spring Boot Repository Unit Test with @DataJpaTest](https://bezkoder.com/spring-boot-unit-test-jpa-repo-datajpatest/)
-
-> [Deploy Spring Boot App on AWS – Elastic Beanstalk](https://bezkoder.com/deploy-spring-boot-aws-eb/)
-
-> [Secure Spring Boot App with Spring Security & JWT Authentication](https://bezkoder.com/spring-boot-jwt-authentication/)
-
 ## Dependency
 ```xml
-<dependency>
-	<groupId>org.springframework.boot</groupId>
-	<artifactId>spring-boot-starter-data-jpa</artifactId>
-</dependency>
+<dependencies>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-validation</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt</artifactId>
+			<version>0.9.1</version>
+		</dependency>
+		<dependency>
+			<groupId>javax.validation</groupId>
+			<artifactId>validation-api</artifactId>
+			<version>2.0.1.Final</version>
+		</dependency>
+		<!-- liquibase-core -->
+		<dependency>
+			<groupId>org.liquibase</groupId>
+			<artifactId>liquibase-core</artifactId>
+		</dependency>
+		<!-- SpringDoc -->
+		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-ui</artifactId>
+			<version>${springdoc.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-data-rest</artifactId>
+			<version>${springdoc.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.13.1</version>
+			<scope>test</scope>
+		</dependency>
 
-<dependency>
-	<groupId>org.springframework.boot</groupId>
-	<artifactId>spring-boot-starter-security</artifactId>
-</dependency>
-
-<dependency>
-	<groupId>org.springframework.boot</groupId>
-	<artifactId>spring-boot-starter-web</artifactId>
-</dependency>
-
-<dependency>
-	<groupId>mysql</groupId>
-	<artifactId>mysql-connector-java</artifactId>
-	<scope>runtime</scope>
-</dependency>
-
-<dependency>
-	<groupId>io.jsonwebtoken</groupId>
-	<artifactId>jjwt</artifactId>
-	<version>0.9.1</version>
-</dependency>
+	</dependencies>
 ```
 
 ## Configure Spring Datasource, JPA, App properties
 Open `src/main/resources/application.properties`
 
-```properties
-spring.datasource.url= jdbc:mysql://localhost:3306/testdb?useSSL=false
-spring.datasource.username= root
-spring.datasource.password= 123456
-
-spring.jpa.properties.hibernate.dialect= org.hibernate.dialect.MySQL5InnoDBDialect
-spring.jpa.hibernate.ddl-auto= update
-
-# App Properties
-bezkoder.app.jwtSecret= bezKoderSecretKey
-bezkoder.app.jwtExpirationMs= 3600000
-bezkoder.app.jwtRefreshExpirationMs= 86400000
+```yml
+server:
+  port: 8005
+####Spring configuration####
+spring:
+  banner:
+    location: classpath:banner.txt
+  application:
+    name: user-service
+  datasource:
+    url: jdbc:mysql://localhost:3306/testdb?serverTimezone=UTC&allowPublicKeyRetrieval=true&useSSL=false&characterEncoding=UTF-8
+    username: root
+    password: 123456
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    initialization-mode: always
+    hikari:
+      connectionTimeout: 30000
+      idleTimeout: 600000
+      maxLifetime: 1800000
+      minimum-idle: 5
+      maximum-pool-size: 5
+  jpa:
+    hibernate:
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+      ddl-auto: update
+    properties:
+      hibernate:
+        show_sql: false
+        format_sql: true 
+  jackson:
+    serialization:
+      fail-on-empty-beans: false
+##Liquibase configuration##
+  liquibase:
+    change-log: classpath:/db/changelog/changelog-master.xml
+####App properties####
+app:
+  jwt:
+    secretKey: markloveSecretKey
+    #expirationMs= 3600000
+    #refreshExpirationMs= 86400000
+    ##For test
+    expirationMs: 600000
+    refreshExpirationMs: 1200000
+  signup:
+    defaultRoles:
+      - ROLE_USER
+    expirationHours: 24
+  reset-password:
+    expirationHours: 24
+###### Spring doc ######
+springdoc:
+  version: @springdoc.version@
+  # custom path for swagger-ui
+  swagger-ui:
+    path: swagger-ui.html
+    operationsSorter: method
+  # custom path for api docs
+  api-docs:
+    path: api-docs
 ```
 
 ## Run Spring Boot application
@@ -130,9 +167,33 @@ bezkoder.app.jwtRefreshExpirationMs= 86400000
 mvn spring-boot:run
 ```
 
-## Run following SQL insert statements
-```
+## Using liquidbase management change log database
+
+## Init database
+``` Role
 INSERT INTO roles(name) VALUES('ROLE_USER');
 INSERT INTO roles(name) VALUES('ROLE_MODERATOR');
 INSERT INTO roles(name) VALUES('ROLE_ADMIN');
-```
+``
+``` User
+@Override
+	public void run(String... args) throws Exception {
+		if(!userRepository.existsByUsername("ngupq")) {
+			User user = new User();
+			user.setUsername("ngupq");
+			user.setEmail("ngupq@gmail.com");
+			user.setPassword(passwordEncoder.encode("123456"));
+			user.setEnable(true);
+			user.setAccountExpired(false);
+			user.setAccountLocked(false);
+			user.setCredentialsExpired(false);
+			Set<Role> roles = new HashSet<>();
+			roles.add(roleRepository.findByName(ERole.ROLE_ADMIN).orElseGet(null));
+			roles.add(roleRepository.findByName(ERole.ROLE_USER).orElseGet(null));
+			roles.add(roleRepository.findByName(ERole.ROLE_MODERATOR).orElseGet(null));
+			user.setRoles(roles);
+			userRepository.save(user);
+			System.out.println(user);
+		}
+	}
+``
