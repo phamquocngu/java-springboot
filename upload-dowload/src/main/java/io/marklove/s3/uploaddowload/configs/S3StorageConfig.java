@@ -1,4 +1,4 @@
-package io.marklove.s3.uploaddowload.config;
+package io.marklove.s3.uploaddowload.configs;
 
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
@@ -8,12 +8,14 @@ import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 
 /**
  * @author ngupq
  */
 @Configuration
-public class StorageConfig {
+@Profile("prod")
+public class S3StorageConfig {
     @Value("${cloud.aws.credentials.access-key}")
     private String accessKey;
     @Value("${cloud.aws.credentials.secret-key}")

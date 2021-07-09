@@ -1,6 +1,6 @@
-package io.marklove.s3.uploaddowload.controller;
+package io.marklove.s3.uploaddowload.controllers;
 
-import io.marklove.s3.uploaddowload.service.StorageService;
+import io.marklove.s3.uploaddowload.services.impl.S3StorageServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpStatus;
@@ -16,11 +16,11 @@ import org.springframework.web.multipart.MultipartFile;
 public class StorageController {
 
     @Autowired
-    private StorageService service;
+    private S3StorageServiceImpl service;
 
     @PostMapping("/upload")
     public ResponseEntity<String> uploadFile(@RequestParam(value = "file") MultipartFile file) {
-        return new ResponseEntity<>(service.uploadFile(file), HttpStatus.OK);
+        return new ResponseEntity<>(service.uploadFile(file, ""), HttpStatus.OK);
     }
 
     @GetMapping("/download/{fileName}")
@@ -36,7 +36,7 @@ public class StorageController {
     }
 
     @DeleteMapping("/delete/{fileName}")
-    public ResponseEntity<String> deleteFile(@PathVariable String fileName) {
+    public ResponseEntity<?> deleteFile(@PathVariable String fileName) {
         return new ResponseEntity<>(service.deleteFile(fileName), HttpStatus.OK);
     }
 }
