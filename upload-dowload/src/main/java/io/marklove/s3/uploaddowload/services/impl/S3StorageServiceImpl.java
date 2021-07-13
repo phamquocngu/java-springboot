@@ -1,10 +1,11 @@
-package io.marklove.s3.uploaddowload.service;
+package io.marklove.s3.uploaddowload.services.impl;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.amazonaws.services.s3.model.S3Object;
 import com.amazonaws.services.s3.model.S3ObjectInputStream;
 import com.amazonaws.util.IOUtils;
+import io.marklove.s3.uploaddowload.services.StorageService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,20 +20,25 @@ import java.io.IOException;
  * @author ngupq
  */
 @Service
+//@Profile("prod")
 @Slf4j
-public class StorageService {
-    @Value("${application.bucket.name}")
+public class S3StorageServiceImpl implements StorageService {
+    @Value("${cloud.aws.bucket.name}")
     private String bucketName;
+    private static final String SLASH = "/";
 
     @Autowired
     private AmazonS3 s3Client;
 
-    public String uploadFile(MultipartFile file) {
+    public String uploadFile(MultipartFile file, String prefixPath) {
         File fileObj = convertMultiPartFileToFile(file);
-        String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
+        final String fileName = prefixPath + System.currentTimeMillis() +
+                SLASH + file.getOriginalFilename();
+
         s3Client.putObject(new PutObjectRequest(bucketName, fileName, fileObj));
         fileObj.delete();
-        return "File uploaded : " + fileName;
+
+        return  fileName;
     }
 
 
@@ -49,9 +55,9 @@ public class StorageService {
     }
 
 
-    public String deleteFile(String fileName) {
+    public boolean deleteFile(String fileName) {
         s3Client.deleteObject(bucketName, fileName);
-        return fileName + " removed ...";
+        return true;
     }
 
 

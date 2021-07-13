@@ -1,0 +1,25 @@
+spring:
+  servlet:
+    multipart:
+      enabled: true
+      file-size-threshold: 2MB
+      max-file-size: 5MB
+      max-request-size: 10MB
+server:
+  port: 9090
+### Configuration bean storage ###
+app:
+  storage:
+    bean: io.marklove.s3.uploaddowload.services.impl.S3StorageServiceImpl
+### Configuration storage aws S3 ####
+cloud:
+  aws:
+    credentials:
+      access-key:
+      secret-key:
+    region:
+      static: us-east-2
+    bucket:
+      name: marklove06
+    stack:
+      auto: false
