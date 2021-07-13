@@ -1,16 +1,16 @@
 package io.marklove.spring.security.jwt.controllers.security;
 
+import io.marklove.spring.security.jwt.constants.ApiUrls;
 import io.marklove.spring.security.jwt.constants.MessageCode;
-import io.marklove.spring.security.jwt.exception.BusinessException;
-import io.marklove.spring.security.jwt.payload.request.CreateUserRequest;
-import io.marklove.spring.security.jwt.payload.response.ErrorResponse;
-import io.marklove.spring.security.jwt.payload.response.JwtResponse;
-import io.marklove.spring.security.jwt.payload.response.ValidatedErrorResponse;
-import io.marklove.spring.security.jwt.persistence.entities.Role;
-import io.marklove.spring.security.jwt.persistence.entities.User;
-import io.marklove.spring.security.jwt.persistence.enums.ERole;
-import io.marklove.spring.security.jwt.persistence.repository.RoleRepository;
-import io.marklove.spring.security.jwt.persistence.repository.UserRepository;
+import io.marklove.spring.security.jwt.exceptions.BusinessException;
+import io.marklove.spring.security.jwt.payloads.requests.CreateUserRequest;
+import io.marklove.spring.security.jwt.payloads.responses.ErrorResponse;
+import io.marklove.spring.security.jwt.payloads.responses.ValidatedErrorResponse;
+import io.marklove.spring.security.jwt.persistences.entities.Role;
+import io.marklove.spring.security.jwt.persistences.entities.User;
+import io.marklove.spring.security.jwt.enums.ERole;
+import io.marklove.spring.security.jwt.persistences.repository.RoleRepository;
+import io.marklove.spring.security.jwt.persistences.repository.UserRepository;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -33,7 +33,6 @@ import java.util.Set;
  * @author ngupq
  */
 @RestController
-@RequestMapping("/api/admin")
 @Tag(name = "admin controller", description = "the APIs for role admin")
 public class AdminController {
     @Autowired
@@ -43,7 +42,7 @@ public class AdminController {
     @Autowired
     PasswordEncoder encoder;
 
-    @PostMapping("/create-user")
+    @PostMapping(ApiUrls.CREATE_USER)
     @Operation(summary = "create new a user")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Success", content = {@Content()}),
@@ -55,11 +54,11 @@ public class AdminController {
                     @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))})})
     public ResponseEntity<?> createUser(@Valid @RequestBody CreateUserRequest signUpRequest) throws Exception {
         if (userRepository.existsByUsername(signUpRequest.getUsername())) {
-            throw new BusinessException(MessageCode.Error.code5000);
+            throw new BusinessException(MessageCode.Error.code5000, null);
         }
 
         if (userRepository.existsByEmail(signUpRequest.getEmail())) {
-            throw new BusinessException(MessageCode.Error.code5001);
+            throw new BusinessException(MessageCode.Error.code5001, null);
         }
 
         // Create new user's account
@@ -76,26 +75,26 @@ public class AdminController {
 
         if (strRoles == null) {
             Role userRole = roleRepository.findByName(ERole.ROLE_USER)
-                    .orElseThrow(() -> new BusinessException(MessageCode.Error.code5002));
+                    .orElseThrow(() -> new BusinessException(MessageCode.Error.code5002, null));
             roles.add(userRole);
         } else {
             strRoles.forEach(role -> {
                 switch (role) {
                     case "admin":
                         Role adminRole = roleRepository.findByName(ERole.ROLE_ADMIN)
-                                .orElseThrow(() -> new BusinessException(MessageCode.Error.code5002));
+                                .orElseThrow(() -> new BusinessException(MessageCode.Error.code5002, null));
                         roles.add(adminRole);
 
                         break;
                     case "mod":
                         Role modRole = roleRepository.findByName(ERole.ROLE_MODERATOR)
-                                .orElseThrow(() -> new BusinessException(MessageCode.Error.code5002));
+                                .orElseThrow(() -> new BusinessException(MessageCode.Error.code5002, null));
                         roles.add(modRole);
 
                         break;
                     default:
                         Role userRole = roleRepository.findByName(ERole.ROLE_USER)
-                                .orElseThrow(() -> new BusinessException(MessageCode.Error.code5002));
+                                .orElseThrow(() -> new BusinessException(MessageCode.Error.code5002, null));
                         roles.add(userRole);
                 }
             });

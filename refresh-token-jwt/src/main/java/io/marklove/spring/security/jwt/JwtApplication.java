@@ -1,10 +1,10 @@
 package io.marklove.spring.security.jwt;
 
-import io.marklove.spring.security.jwt.persistence.entities.Role;
-import io.marklove.spring.security.jwt.persistence.entities.User;
-import io.marklove.spring.security.jwt.persistence.enums.ERole;
-import io.marklove.spring.security.jwt.persistence.repository.RoleRepository;
-import io.marklove.spring.security.jwt.persistence.repository.UserRepository;
+import io.marklove.spring.security.jwt.persistences.entities.Role;
+import io.marklove.spring.security.jwt.persistences.entities.User;
+import io.marklove.spring.security.jwt.enums.ERole;
+import io.marklove.spring.security.jwt.persistences.repository.RoleRepository;
+import io.marklove.spring.security.jwt.persistences.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;

@@ -2,8 +2,7 @@ package io.marklove.spring.security.jwt.security;
 
 import io.marklove.spring.security.jwt.security.filters.AuthTokenFilter;
 import io.marklove.spring.security.jwt.security.filters.CORSFilter;
-import io.marklove.spring.security.jwt.security.jwt.AuthEntryPointJwt;
-import io.marklove.spring.security.jwt.security.services.impl.UserDetailsServiceImpl;
+import io.marklove.spring.security.jwt.security.service.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,7 +10,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -41,7 +39,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private UserDetailsServiceImpl userDetailsService;
     @Autowired
-    private AuthEntryPointJwt unauthorizedHandler;
+    private AuthEntryPoint unauthorizedHandler;
     @Bean
     public AuthTokenFilter authenticationJwtTokenFilter() {
         return new AuthTokenFilter();

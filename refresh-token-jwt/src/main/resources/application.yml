@@ -40,7 +40,7 @@ app:
     #expirationMs= 3600000
     #refreshExpirationMs= 86400000
     ##For test
-    expirationMs: 600000
+    expirationMs: 10000
     refreshExpirationMs: 1200000
   signup:
     defaultRoles:

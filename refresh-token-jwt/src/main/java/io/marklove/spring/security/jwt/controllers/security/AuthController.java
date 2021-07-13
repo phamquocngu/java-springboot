@@ -1,17 +1,22 @@
 package io.marklove.spring.security.jwt.controllers.security;
 
-import io.marklove.spring.security.jwt.constants.MessageCode;
-import io.marklove.spring.security.jwt.exception.TokenRefreshException;
-import io.marklove.spring.security.jwt.exception.ValidatedException;
-import io.marklove.spring.security.jwt.payload.request.LogOutRequest;
-import io.marklove.spring.security.jwt.payload.request.LoginRequest;
-import io.marklove.spring.security.jwt.payload.request.TokenRefreshRequest;
-import io.marklove.spring.security.jwt.payload.response.*;
-import io.marklove.spring.security.jwt.payload.response.base.UserInfor;
-import io.marklove.spring.security.jwt.persistence.entities.RefreshToken;
-import io.marklove.spring.security.jwt.security.jwt.JwtUtils;
-import io.marklove.spring.security.jwt.security.services.RefreshTokenService;
-import io.marklove.spring.security.jwt.security.services.impl.UserDetailsImpl;
+import io.marklove.spring.security.jwt.constants.ApiUrls;
+import io.marklove.spring.security.jwt.constants.AuthConstants;
+import io.marklove.spring.security.jwt.exceptions.TokenRefreshException;
+import io.marklove.spring.security.jwt.exceptions.ValidatedException;
+import io.marklove.spring.security.jwt.payloads.requests.LogOutRequest;
+import io.marklove.spring.security.jwt.payloads.requests.LoginRequest;
+import io.marklove.spring.security.jwt.payloads.requests.TokenRefreshRequest;
+import io.marklove.spring.security.jwt.payloads.responses.*;
+import io.marklove.spring.security.jwt.payloads.responses.security.JwtResponse;
+import io.marklove.spring.security.jwt.payloads.responses.security.RefreshTokenResponse;
+import io.marklove.spring.security.jwt.payloads.responses.security.UnAuthResponse;
+import io.marklove.spring.security.jwt.payloads.responses.base.UserInfor;
+import io.marklove.spring.security.jwt.payloads.responses.ValidatedErrorResponse;
+import io.marklove.spring.security.jwt.persistences.entities.RefreshToken;
+import io.marklove.spring.security.jwt.security.JwtUtils;
+import io.marklove.spring.security.jwt.services.RefreshTokenService;
+import io.marklove.spring.security.jwt.security.model.UserDetailsImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -36,7 +41,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api/auth")
 @Tag(name = "authentication", description = "the authentication API with documentation annotations")
 public class AuthController {
   @Autowired
@@ -46,7 +50,7 @@ public class AuthController {
   @Autowired
   private RefreshTokenService refreshTokenService;
 
-  @PostMapping("/signin")
+  @PostMapping(ApiUrls.SIGN_IN)
   @Operation(summary = "get jwt token")
   @ApiResponses(value = {
           @ApiResponse(responseCode = "200", description = "Success", content = {
@@ -81,7 +85,7 @@ public class AuthController {
        new UserInfor(userDetails.getId(), userDetails.getUsername(), userDetails.getEmail(), roles)));
   }
 
-  @PostMapping("/refresh-token")
+  @PostMapping(ApiUrls.REFRESH_TOKEN)
   @Operation(summary = "get new token by refresh-token")
   @ApiResponses(value = {
           @ApiResponse(responseCode = "200", description = "Success", content = {
@@ -92,7 +96,7 @@ public class AuthController {
                   @Content(mediaType = "application/json", schema = @Schema(implementation = ValidatedErrorResponse.class))),
           @ApiResponse(responseCode = "500", description = "Internal server error", content = {
                   @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))})})
-  public ResponseEntity<?> refreshtoken(@Valid @RequestBody TokenRefreshRequest request) {
+  public ResponseEntity<?> refreshToken(@Valid @RequestBody TokenRefreshRequest request) {
     String requestRefreshToken = request.getRefreshToken();
 
     return refreshTokenService.findByToken(requestRefreshToken)
@@ -102,20 +106,6 @@ public class AuthController {
           String token = jwtUtils.generateTokenFromUsername(user.getUsername());
           return ResponseEntity.ok(new RefreshTokenResponse(token, requestRefreshToken));
         })
-        .orElseThrow(() -> new TokenRefreshException(requestRefreshToken,
-            MessageCode.Auth.code4100));
-  }
-  
-  @PostMapping("/logout")
-  @Operation(summary = "logout remove refresh-token")
-  @ApiResponses(value = {
-          @ApiResponse(responseCode = "200", description = "success", content = {@Content()}),
-          @ApiResponse(responseCode = "417", description = "Bad request", content =
-                  @Content(mediaType = "application/json", schema = @Schema(implementation = ValidatedErrorResponse.class))),
-          @ApiResponse(responseCode = "500", description = "Internal server error", content = {
-                  @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))})})
-  public ResponseEntity<?> logoutUser(@Valid @RequestBody LogOutRequest logOutRequest) {
-    refreshTokenService.deleteByUserId(logOutRequest.getUserId());
-    return ResponseEntity.ok(null);
+        .orElseThrow(() -> new TokenRefreshException(AuthConstants.Error.FAILED_GENERATE_TOKEN));
   }
 }

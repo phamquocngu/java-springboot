@@ -2,16 +2,13 @@ package io.marklove.spring.security.jwt.security.filters;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.marklove.spring.security.jwt.constants.MessageCode;
-import io.marklove.spring.security.jwt.exception.JwtException;
-import io.marklove.spring.security.jwt.payload.response.ErrorResponse;
-import io.marklove.spring.security.jwt.security.jwt.JwtUtils;
-import io.marklove.spring.security.jwt.security.services.impl.UserDetailsServiceImpl;
-import io.marklove.spring.security.jwt.utils.MessageService;
+import io.marklove.spring.security.jwt.exceptions.JwtException;
+import io.marklove.spring.security.jwt.security.JwtUtils;
+import io.marklove.spring.security.jwt.security.service.UserDetailsServiceImpl;
+import io.marklove.spring.security.jwt.utils.GetMessageService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -33,14 +30,14 @@ public class AuthTokenFilter extends OncePerRequestFilter {
   @Autowired
   private UserDetailsServiceImpl userDetailsService;
   @Autowired
-  private MessageService messageService;
+  private GetMessageService messageService;
 
   @Override
   protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
                                   FilterChain filterChain) throws ServletException, IOException {
     try {
       String jwt = parseJwt(request);
-      if (jwt != null && jwtUtils.validateJwtToken(jwt)) {
+      if (jwt != null && jwtUtils.validateJwtToken(jwt, request)) {
         String username = jwtUtils.getUserNameFromJwtToken(jwt);
 
         UserDetails userDetails = userDetailsService.loadUserByUsername(username);
@@ -52,18 +49,8 @@ public class AuthTokenFilter extends OncePerRequestFilter {
       }
     } catch (JwtException e) {
       logger.error("Validate token error!");
-      ErrorResponse errorResponse = new ErrorResponse(
-              String.valueOf(HttpStatus.FORBIDDEN.value()),
-              messageService.getMessage(e.getCode()),
-              "");
-      response.getWriter().write(convertObjectToJson(errorResponse));
     } catch (Exception e) {
       logger.error("Cannot set user authentication: {}", e.getMessage());
-      ErrorResponse errorResponse = new ErrorResponse(
-              String.valueOf(HttpStatus.FORBIDDEN.value()),
-              messageService.getMessage(MessageCode.Error.code5009),
-              "");
-      response.getWriter().write(convertObjectToJson(errorResponse));
     }
 
     filterChain.doFilter(request, response);
