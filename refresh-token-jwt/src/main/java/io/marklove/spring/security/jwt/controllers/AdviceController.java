@@ -31,8 +31,7 @@ public class AdviceController {
     @ResponseStatus(HttpStatus.FORBIDDEN)
     public ErrorResponse handleTokenRefreshException(TokenRefreshException ex, WebRequest request) {
 
-        return new ErrorResponse(
-                String.valueOf(HttpStatus.FORBIDDEN.value()),
+        return new ErrorResponse(ex.getCode(),
                 messageService.getMessage(ex.getCode()),
                 request.getDescription(false));
     }

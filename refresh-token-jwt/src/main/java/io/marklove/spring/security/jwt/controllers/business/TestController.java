@@ -44,6 +44,6 @@ public class TestController {
 	@GetMapping("/multi-language")
 	public String multiLanguage() {
 		System.out.println(localeResolver.toString());
-		throw new BusinessException(MessageCode.code1000, null);
+		throw new BusinessException(MessageCode.Error.code5000, null);
 	}
 }

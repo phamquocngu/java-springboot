@@ -47,11 +47,11 @@ public class AdminController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Success", content = {@Content()}),
             @ApiResponse(responseCode = "403", description = "Forbidden", content =
-            @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))),
+                @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))),
             @ApiResponse(responseCode = "417", description = "Bad request", content =
-            @Content(mediaType = "application/json", schema = @Schema(implementation = ValidatedErrorResponse.class))),
+                @Content(mediaType = "application/json", schema = @Schema(implementation = ValidatedErrorResponse.class))),
             @ApiResponse(responseCode = "500", description = "Internal server error", content = {
-                    @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))})})
+                @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))})})
     public ResponseEntity<?> createUser(@Valid @RequestBody CreateUserRequest signUpRequest) throws Exception {
         if (userRepository.existsByUsername(signUpRequest.getUsername())) {
             throw new BusinessException(MessageCode.Error.code5000, null);
@@ -70,30 +70,30 @@ public class AdminController {
                 signUpRequest.getAccountLocked() == null ? false : signUpRequest.getAccountLocked(),
                 signUpRequest.getCredentialsExpired() == null ? false : signUpRequest.getCredentialsExpired());
 
-        Set<String> strRoles = signUpRequest.getRole();
+        Set<ERole> strRoles = signUpRequest.getRole();
         Set<Role> roles = new HashSet<>();
 
         if (strRoles == null) {
-            Role userRole = roleRepository.findByName(ERole.ROLE_USER)
+            Role userRole = roleRepository.findByName(ERole.USER)
                     .orElseThrow(() -> new BusinessException(MessageCode.Error.code5002, null));
             roles.add(userRole);
         } else {
             strRoles.forEach(role -> {
                 switch (role) {
-                    case "admin":
-                        Role adminRole = roleRepository.findByName(ERole.ROLE_ADMIN)
+                    case ADMIN:
+                        Role adminRole = roleRepository.findByName(ERole.ADMIN)
                                 .orElseThrow(() -> new BusinessException(MessageCode.Error.code5002, null));
                         roles.add(adminRole);
 
                         break;
-                    case "mod":
-                        Role modRole = roleRepository.findByName(ERole.ROLE_MODERATOR)
+                    case MODERATOR:
+                        Role modRole = roleRepository.findByName(ERole.MODERATOR)
                                 .orElseThrow(() -> new BusinessException(MessageCode.Error.code5002, null));
                         roles.add(modRole);
 
                         break;
                     default:
-                        Role userRole = roleRepository.findByName(ERole.ROLE_USER)
+                        Role userRole = roleRepository.findByName(ERole.USER)
                                 .orElseThrow(() -> new BusinessException(MessageCode.Error.code5002, null));
                         roles.add(userRole);
                 }

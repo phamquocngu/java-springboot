@@ -1,8 +1,5 @@
 package io.marklove.spring.security.jwt.security.filters;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import io.marklove.spring.security.jwt.exceptions.JwtException;
 import io.marklove.spring.security.jwt.security.JwtUtils;
 import io.marklove.spring.security.jwt.security.service.UserDetailsServiceImpl;
 import io.marklove.spring.security.jwt.utils.GetMessageService;
@@ -47,8 +44,6 @@ public class AuthTokenFilter extends OncePerRequestFilter {
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
       }
-    } catch (JwtException e) {
-      logger.error("Validate token error!");
     } catch (Exception e) {
       logger.error("Cannot set user authentication: {}", e.getMessage());
     }
@@ -64,13 +59,5 @@ public class AuthTokenFilter extends OncePerRequestFilter {
     }
 
     return null;
-  }
-
-  private String convertObjectToJson(Object object) throws JsonProcessingException {
-    if (object == null) {
-      return null;
-    }
-    ObjectMapper mapper = new ObjectMapper();
-    return mapper.writeValueAsString(object);
   }
 }

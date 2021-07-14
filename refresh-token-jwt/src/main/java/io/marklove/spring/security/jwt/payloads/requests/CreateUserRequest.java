@@ -1,6 +1,7 @@
 package io.marklove.spring.security.jwt.payloads.requests;
 
 import io.marklove.spring.security.jwt.constants.ValidationCode;
+import io.marklove.spring.security.jwt.enums.ERole;
 
 import java.util.Set;
 
@@ -16,7 +17,7 @@ public class CreateUserRequest {
     @Size(max = 50, message = ValidationCode.VALIDATED_SIZE)
     private String email;
     
-    private Set<String> role;
+    private Set<ERole> role;
     
     @NotBlank(message = ValidationCode.VALIDATED_BLANK)
     @Size(min = 6, max = 50, message = ValidationCode.VALIDATED_SIZE)
@@ -49,13 +50,13 @@ public class CreateUserRequest {
     public void setPassword(String password) {
         this.password = password;
     }
-    
-    public Set<String> getRole() {
-      return this.role;
+
+    public Set<ERole> getRole() {
+        return role;
     }
-    
-    public void setRole(Set<String> role) {
-      this.role = role;
+
+    public void setRole(Set<ERole> role) {
+        this.role = role;
     }
 
     public Boolean getEnable() {

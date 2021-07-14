@@ -40,9 +40,9 @@ public class JwtApplication implements CommandLineRunner {
 			user.setAccountLocked(false);
 			user.setCredentialsExpired(false);
 			Set<Role> roles = new HashSet<>();
-			roles.add(roleRepository.findByName(ERole.ROLE_ADMIN).orElseGet(null));
-			roles.add(roleRepository.findByName(ERole.ROLE_USER).orElseGet(null));
-			roles.add(roleRepository.findByName(ERole.ROLE_MODERATOR).orElseGet(null));
+			roles.add(roleRepository.findByName(ERole.ADMIN).orElseGet(null));
+			roles.add(roleRepository.findByName(ERole.USER).orElseGet(null));
+			roles.add(roleRepository.findByName(ERole.MODERATOR).orElseGet(null));
 			user.setRoles(roles);
 			userRepository.save(user);
 			System.out.println(user);

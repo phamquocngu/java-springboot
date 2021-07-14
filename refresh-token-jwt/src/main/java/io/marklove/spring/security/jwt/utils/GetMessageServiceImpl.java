@@ -25,7 +25,7 @@ public class GetMessageServiceImpl implements GetMessageService {
         try {
             return messageSource.getMessage(code, null, servletRequest.getLocale());
         } catch (Exception e) {
-            logger.error("message service can't get message with code {}, Locale {}: ", code, servletRequest.getLocale());
+            logger.error("message service can't get message with code: {}, Locale: {} ", code, servletRequest.getLocale());
             return "";
         }
     }

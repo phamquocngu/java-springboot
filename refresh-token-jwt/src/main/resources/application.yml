@@ -44,7 +44,7 @@ app:
     refreshExpirationMs: 1200000
   signup:
     defaultRoles:
-      - ROLE_USER
+      - USER
     expirationHours: 24
   reset-password:
     expirationHours: 24

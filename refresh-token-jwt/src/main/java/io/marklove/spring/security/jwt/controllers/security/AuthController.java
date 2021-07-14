@@ -104,8 +104,7 @@ public class AuthController {
         .map(RefreshToken::getUser)
         .map(user -> {
           String token = jwtUtils.generateTokenFromUsername(user.getUsername());
-          return ResponseEntity.ok(new RefreshTokenResponse(token, requestRefreshToken));
-        })
+          return ResponseEntity.ok(new RefreshTokenResponse(token, requestRefreshToken));})
         .orElseThrow(() -> new TokenRefreshException(AuthConstants.Error.FAILED_GENERATE_TOKEN));
   }
 }

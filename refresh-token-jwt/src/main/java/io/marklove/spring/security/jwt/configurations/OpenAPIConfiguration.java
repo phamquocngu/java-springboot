@@ -1,5 +1,6 @@
 package io.marklove.spring.security.jwt.configurations;
 
+import io.marklove.spring.security.jwt.constants.ApiUrls;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.info.License;
@@ -25,7 +26,15 @@ public class OpenAPIConfiguration {
 
     @Bean
     public GroupedOpenApi securityOpenApi() {
-        String paths[] = {"/api/admin/**", "/api/non-auth/**", "/api/auth/**"};
+        String paths[] = { ApiUrls.SIGN_IN,
+                ApiUrls.REFRESH_TOKEN,
+                ApiUrls.SIGN_IN,
+                ApiUrls.SIGN_UP_VERIFY,
+                ApiUrls.RESET_PASS_VERIFY,
+                ApiUrls.RESET_PASS_REQUEST,
+                ApiUrls.LOG_OUT,
+                ApiUrls.CREATE_USER};
+
         String packagesToscan[] = {"io.marklove.spring.security.jwt.controllers.security"};
         return GroupedOpenApi.builder()
                 .group("security")
