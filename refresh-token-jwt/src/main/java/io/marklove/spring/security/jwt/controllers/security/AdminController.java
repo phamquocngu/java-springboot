@@ -34,6 +34,7 @@ import java.util.Set;
  */
 @RestController
 @Tag(name = "admin controller", description = "the APIs for role admin")
+@RequestMapping(ApiUrls.ADMIN)
 public class AdminController {
     @Autowired
     UserRepository userRepository;

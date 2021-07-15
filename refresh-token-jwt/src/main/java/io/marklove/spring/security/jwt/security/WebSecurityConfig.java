@@ -1,5 +1,7 @@
 package io.marklove.spring.security.jwt.security;
 
+import io.marklove.spring.security.jwt.constants.ApiUrls;
+import io.marklove.spring.security.jwt.enums.ERole;
 import io.marklove.spring.security.jwt.security.filters.AuthTokenFilter;
 import io.marklove.spring.security.jwt.security.filters.CORSFilter;
 import io.marklove.spring.security.jwt.security.service.UserDetailsServiceImpl;
@@ -25,15 +27,16 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
         // jsr250Enabled = true,
         prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+
     private static final String[] AUTH_WHITELIST = {
             //--Swagger UI v3 (OpenAPI)
             "/swagger-ui.html",
             "/swagger-ui/**",
             "/api-docs/**",
             //--APIs
-            "/api/auth/**",
-            "/api/non-auth/**",
-            "/api/test/**"
+            ApiUrls.AUTH + ApiUrls.PATTERN_ALL,
+            ApiUrls.SIGN_UP + ApiUrls.PATTERN_ALL,
+            ApiUrls.RESET_PASS + ApiUrls.PATTERN_ALL
     };
 
     @Autowired
@@ -72,7 +75,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeRequests()
                     .antMatchers(AUTH_WHITELIST).permitAll()
-                    .antMatchers("api/admin/*").hasRole("ADMIN")
+                    .antMatchers(ApiUrls.ADMIN + ApiUrls.PATTERN_ALL).hasRole(ERole.ADMIN.toString())
                     .anyRequest().authenticated();
 
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);

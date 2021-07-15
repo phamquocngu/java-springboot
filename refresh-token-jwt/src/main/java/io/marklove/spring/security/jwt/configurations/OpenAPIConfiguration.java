@@ -14,6 +14,7 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 public class OpenAPIConfiguration {
+
     @Bean
     public OpenAPI customOpenAPI(@Value("${springdoc.version}") String appVersion) {
         return new OpenAPI().info(new Info().title("Marklove APIs")
@@ -26,16 +27,13 @@ public class OpenAPIConfiguration {
 
     @Bean
     public GroupedOpenApi securityOpenApi() {
-        String paths[] = { ApiUrls.SIGN_IN,
-                ApiUrls.REFRESH_TOKEN,
-                ApiUrls.SIGN_IN,
-                ApiUrls.SIGN_UP_VERIFY,
-                ApiUrls.RESET_PASS_VERIFY,
-                ApiUrls.RESET_PASS_REQUEST,
-                ApiUrls.LOG_OUT,
-                ApiUrls.CREATE_USER};
+        String paths[] = { ApiUrls.AUTH + ApiUrls.PATTERN_ALL,
+                ApiUrls.SIGN_UP + ApiUrls.PATTERN_ALL,
+                ApiUrls.RESET_PASS + ApiUrls.PATTERN_ALL,
+                ApiUrls.USER + ApiUrls.PATTERN_ALL};
 
         String packagesToscan[] = {"io.marklove.spring.security.jwt.controllers.security"};
+
         return GroupedOpenApi.builder()
                 .group("security")
                 .pathsToMatch(paths)

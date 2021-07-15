@@ -9,7 +9,7 @@ public class AuthConstants {
         public static final String EXPIRED_JWT = "expired-jwt";
         public static final String UNAUTHORIZED = "unauthorized";
         public static final  String EXPIRED_REFRESH_TOKEN = "expired-refresh-token";
-        public static final  String FAILED_GENERATE_TOKEN = "failed-generate-token";
+        public static final  String INVALID_REFRESH_TOKEN = "invalid-refresh-token";
     }
 
 }

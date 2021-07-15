@@ -42,6 +42,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @Tag(name = "authentication", description = "the authentication API with documentation annotations")
+@RequestMapping(ApiUrls.USER)
 public class UserController {
   @Autowired
   private RefreshTokenService refreshTokenService;

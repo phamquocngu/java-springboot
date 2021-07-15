@@ -26,11 +26,12 @@ import javax.validation.Valid;
  */
 @RestController
 @Tag(name = "sign-up", description = "register, verify register by token")
+@RequestMapping(ApiUrls.SIGN_UP)
 public class SignUpController {
     @Autowired
     private VerifyTokenService verifyTokenService;
 
-    @PostMapping(ApiUrls.SIGN_UP_REGISTER)
+    @PostMapping(ApiUrls.REGISTER)
     @Operation(summary = "register: return a token to send email verify")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Success", content = {
@@ -47,7 +48,7 @@ public class SignUpController {
         return ResponseEntity.ok(new TokenVerifyResponse(token));
     }
 
-    @PutMapping(ApiUrls.SIGN_UP_VERIFY)
+    @PutMapping(ApiUrls.VERIFY)
     @Operation(summary = "verify register by token")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "success", content = {@Content()}),

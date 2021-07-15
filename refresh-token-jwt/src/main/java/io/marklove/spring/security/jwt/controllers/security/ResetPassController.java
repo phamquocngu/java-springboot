@@ -26,11 +26,12 @@ import javax.validation.Valid;
  */
 @RestController
 @Tag(name = "reset-password", description = "reset-password, verify reset-password by token")
+@RequestMapping(ApiUrls.RESET_PASS)
 public class ResetPassController {
     @Autowired
     private VerifyTokenService verifyTokenService;
 
-    @PostMapping(ApiUrls.RESET_PASS_REQUEST)
+    @PostMapping(ApiUrls.REQUEST)
     @Operation(summary = "reset password: return a token to send email verify")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "success", content = {
@@ -43,7 +44,7 @@ public class ResetPassController {
         return ResponseEntity.ok(new TokenVerifyResponse(token));
     }
 
-    @PutMapping(ApiUrls.RESET_PASS_VERIFY)
+    @PutMapping(ApiUrls.VERIFY)
     @Operation(summary = "verify reset password")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "success", content = {@Content()}),

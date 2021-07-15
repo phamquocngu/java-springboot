@@ -42,6 +42,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @Tag(name = "authentication", description = "the authentication API with documentation annotations")
+@RequestMapping(ApiUrls.AUTH)
 public class AuthController {
   @Autowired
   private AuthenticationManager authenticationManager;
@@ -105,6 +106,6 @@ public class AuthController {
         .map(user -> {
           String token = jwtUtils.generateTokenFromUsername(user.getUsername());
           return ResponseEntity.ok(new RefreshTokenResponse(token, requestRefreshToken));})
-        .orElseThrow(() -> new TokenRefreshException(AuthConstants.Error.FAILED_GENERATE_TOKEN));
+        .orElseThrow(() -> new TokenRefreshException(AuthConstants.Error.INVALID_REFRESH_TOKEN));
   }
 }
