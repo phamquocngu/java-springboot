@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import io.marklove.spring.security.jwt.constants.AuthConstants;
-import io.marklove.spring.security.jwt.payloads.responses.security.UnAuthResponse;
+import io.marklove.spring.security.jwt.payloads.responses.error.ErrorResponse;
 import io.marklove.spring.security.jwt.utils.GetMessageService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,18 +34,19 @@ public class AuthEntryPoint implements AuthenticationEntryPoint {
     logger.error("Unauthorized error: {}", authException.getMessage());
 
     response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-    response.setStatus(HttpStatus.UNAUTHORIZED.value());
-    UnAuthResponse body;
+    ErrorResponse body;
 
     final String expired = (String) request.getAttribute("expired");
     if(expired != null) {
-      body = new UnAuthResponse(HttpStatus.UNAUTHORIZED.value(),
-              AuthConstants.Error.EXPIRED_JWT,
-              messageService.getMessage(AuthConstants.Error.EXPIRED_JWT));
+      response.setStatus(HttpStatus.FORBIDDEN.value());
+      body = new ErrorResponse(AuthConstants.Error.EXPIRED_JWT,
+              messageService.getMessage(AuthConstants.Error.EXPIRED_JWT),
+              request.getRequestURL().toString());
     } else {
-      body = new UnAuthResponse(HttpStatus.UNAUTHORIZED.value(),
-              AuthConstants.Error.UNAUTHORIZED,
-              messageService.getMessage(AuthConstants.Error.UNAUTHORIZED));
+      response.setStatus(HttpStatus.UNAUTHORIZED.value());
+      body = new ErrorResponse(AuthConstants.Error.UNAUTHORIZED,
+              messageService.getMessage(AuthConstants.Error.UNAUTHORIZED),
+              request.getRequestURL().toString());
     }
 
     final ObjectMapper mapper = JsonMapper.builder()

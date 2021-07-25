@@ -1,4 +1,4 @@
-package io.marklove.spring.security.jwt.payloads.requests;
+package io.marklove.spring.security.jwt.payloads.requests.security;
 
 import io.marklove.spring.security.jwt.constants.ValidationCode;
 
@@ -9,7 +9,7 @@ import javax.validation.constraints.Size;
 /**
  * @author ngupq
  */
-public class SignupRequest {
+public class ReqSignup {
     @NotBlank(message = ValidationCode.VALIDATED_BLANK)
     @Size(min = 3, max = 20, message = ValidationCode.VALIDATED_SIZE)
     private String username;

@@ -1,25 +1,24 @@
 package io.marklove.spring.security.jwt.payloads.responses.security;
 
 import io.marklove.spring.security.jwt.constants.AuthConstants;
-import io.marklove.spring.security.jwt.payloads.responses.base.UserInfor;
 
 import java.time.LocalDateTime;
 
-public class JwtResponse {
+public class ResJwt {
     private String accessToken;
     private String type = AuthConstants.BEARER;
     private String refreshToken;
     private UserInfor userInfor;
     private LocalDateTime dateTime;
 
-    public JwtResponse(String accessToken, String refreshToken, UserInfor userInfor) {
+    public ResJwt(String accessToken, String refreshToken, UserInfor userInfor) {
         this.accessToken = accessToken;
         this.refreshToken = refreshToken;
         this.userInfor = userInfor;
         this.dateTime = LocalDateTime.now();
     }
 
-    public JwtResponse(String accessToken, String refreshToken, UserInfor userInfor, LocalDateTime dateTime) {
+    public ResJwt(String accessToken, String refreshToken, UserInfor userInfor, LocalDateTime dateTime) {
         this.accessToken = accessToken;
         this.refreshToken = refreshToken;
         this.userInfor = userInfor;

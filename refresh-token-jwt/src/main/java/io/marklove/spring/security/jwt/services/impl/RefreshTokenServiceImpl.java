@@ -3,8 +3,10 @@ package io.marklove.spring.security.jwt.services.impl;
 import io.marklove.spring.security.jwt.constants.AuthConstants;
 import io.marklove.spring.security.jwt.constants.MessageCode;
 import io.marklove.spring.security.jwt.configurations.JwtProperties;
+import io.marklove.spring.security.jwt.exceptions.CommonException;
 import io.marklove.spring.security.jwt.exceptions.TokenRefreshException;
 import io.marklove.spring.security.jwt.persistences.entities.RefreshToken;
+import io.marklove.spring.security.jwt.persistences.entities.User;
 import io.marklove.spring.security.jwt.persistences.repository.RefreshTokenRepository;
 import io.marklove.spring.security.jwt.persistences.repository.UserRepository;
 import io.marklove.spring.security.jwt.services.RefreshTokenService;
@@ -54,6 +56,7 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
 
     @Transactional
     public int deleteByUserId(Long userId) {
-        return refreshTokenRepository.deleteByUser(userRepository.findById(userId).get());
+        User user = userRepository.findById(userId).orElseThrow(() -> new CommonException(MessageCode.Error.C5008, null));
+        return refreshTokenRepository.deleteByUser(user);
     }
 }

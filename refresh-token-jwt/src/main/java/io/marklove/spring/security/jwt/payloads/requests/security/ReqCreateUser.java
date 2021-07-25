@@ -1,4 +1,4 @@
-package io.marklove.spring.security.jwt.payloads.requests;
+package io.marklove.spring.security.jwt.payloads.requests.security;
 
 import io.marklove.spring.security.jwt.constants.ValidationCode;
 import io.marklove.spring.security.jwt.enums.ERole;
@@ -7,7 +7,7 @@ import java.util.Set;
 
 import javax.validation.constraints.*;
  
-public class CreateUserRequest {
+public class ReqCreateUser {
     @NotBlank(message = ValidationCode.VALIDATED_BLANK)
     @Size(min = 4, max = 20, message = ValidationCode.VALIDATED_SIZE)
     private String username;

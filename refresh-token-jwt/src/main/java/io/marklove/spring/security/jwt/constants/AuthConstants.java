@@ -10,6 +10,6 @@ public class AuthConstants {
         public static final String UNAUTHORIZED = "unauthorized";
         public static final  String EXPIRED_REFRESH_TOKEN = "expired-refresh-token";
         public static final  String INVALID_REFRESH_TOKEN = "invalid-refresh-token";
+        public static final String BAD_CREDENTIALS = "bad-credentials";
     }
-
 }

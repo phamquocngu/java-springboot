@@ -1,12 +1,12 @@
-package io.marklove.spring.security.jwt.payloads.responses;
+package io.marklove.spring.security.jwt.payloads.responses.security;
 
 /**
  * @author ngupq
  */
-public class TokenVerifyResponse {
+public class ResTokenVerify {
     private String token;
 
-    public TokenVerifyResponse(String token) {
+    public ResTokenVerify(String token) {
         this.token = token;
     }
 

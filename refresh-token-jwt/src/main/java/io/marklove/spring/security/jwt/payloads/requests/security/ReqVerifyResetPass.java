@@ -1,4 +1,4 @@
-package io.marklove.spring.security.jwt.payloads.requests;
+package io.marklove.spring.security.jwt.payloads.requests.security;
 
 import io.marklove.spring.security.jwt.constants.ValidationCode;
 import io.marklove.spring.security.jwt.validations.annotations.ResetPassword;
@@ -9,7 +9,7 @@ import javax.validation.constraints.NotBlank;
  * @author ngupq
  */
 @ResetPassword
-public class ResetPasswordRequest {
+public class ReqVerifyResetPass {
     @NotBlank(message = ValidationCode.VALIDATED_BLANK)
     private String token;
     @NotBlank(message = ValidationCode.VALIDATED_BLANK)
@@ -17,7 +17,7 @@ public class ResetPasswordRequest {
     @NotBlank(message = ValidationCode.VALIDATED_BLANK)
     private String newPassword;
 
-    public ResetPasswordRequest(String token, String oldPassword, String newPassword) {
+    public ReqVerifyResetPass(String token, String oldPassword, String newPassword) {
         this.token = token;
         this.oldPassword = oldPassword;
         this.newPassword = newPassword;

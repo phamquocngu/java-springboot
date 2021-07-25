@@ -4,13 +4,13 @@ import io.marklove.spring.security.jwt.constants.AuthConstants;
 
 import java.time.LocalDateTime;
 
-public class RefreshTokenResponse {
+public class ResRefreshToken {
   private String accessToken;
   private String refreshToken;
   private String tokenType = AuthConstants.BEARER;
   private LocalDateTime dateTime;
 
-  public RefreshTokenResponse(String accessToken, String refreshToken) {
+  public ResRefreshToken(String accessToken, String refreshToken) {
     this.accessToken = accessToken;
     this.refreshToken = refreshToken;
     this.dateTime = LocalDateTime.now();

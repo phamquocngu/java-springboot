@@ -1,25 +1,25 @@
-package io.marklove.spring.security.jwt.payloads.responses;
+package io.marklove.spring.security.jwt.payloads.responses.error;
 
 import java.time.LocalDateTime;
 
 public class ErrorResponse {
   private String code;
   private String message;
-  private String description;
+  private Object detail;
   private LocalDateTime dateTime;
 
-  public ErrorResponse(String code, String message, String description) {
+  public ErrorResponse(String code, String message, Object detail) {
     this.code = code;
     this.dateTime = LocalDateTime.now();
     this.message = message;
-    this.description = description;
+    this.detail = detail;
   }
 
-  public ErrorResponse(String code, String message, String description, LocalDateTime dateTime) {
+  public ErrorResponse(String code, String message, Object detail, LocalDateTime dateTime) {
     this.code = code;
     this.dateTime = dateTime;
     this.message = message;
-    this.description = description;
+    this.detail = detail;
   }
 
   public String getCode() {
@@ -30,8 +30,8 @@ public class ErrorResponse {
     return message;
   }
 
-  public String getDescription() {
-    return description;
+  public Object getDetail() {
+    return detail;
   }
 
   public LocalDateTime getDateTime() {

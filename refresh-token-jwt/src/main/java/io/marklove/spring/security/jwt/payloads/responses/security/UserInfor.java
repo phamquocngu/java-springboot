@@ -1,4 +1,4 @@
-package io.marklove.spring.security.jwt.payloads.responses.base;
+package io.marklove.spring.security.jwt.payloads.responses.security;
 
 import java.util.Set;
 

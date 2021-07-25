@@ -4,9 +4,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.marklove.spring.security.jwt.configurations.ResetPasswordProperties;
 import io.marklove.spring.security.jwt.configurations.SignupProperties;
 import io.marklove.spring.security.jwt.constants.MessageCode;
-import io.marklove.spring.security.jwt.exceptions.BusinessException;
-import io.marklove.spring.security.jwt.payloads.requests.ResetPasswordRequest;
-import io.marklove.spring.security.jwt.payloads.requests.SignupRequest;
+import io.marklove.spring.security.jwt.exceptions.CommonException;
+import io.marklove.spring.security.jwt.payloads.requests.security.ReqVerifyResetPass;
+import io.marklove.spring.security.jwt.payloads.requests.security.ReqSignup;
 import io.marklove.spring.security.jwt.persistences.entities.Role;
 import io.marklove.spring.security.jwt.persistences.entities.User;
 import io.marklove.spring.security.jwt.persistences.entities.VerifyToken;
@@ -47,21 +47,21 @@ public class VerifyTokenServiceImpl implements VerifyTokenService {
     private ObjectMapper objectMapper = new ObjectMapper();
 
     @Override
-    public String register(SignupRequest signUpRequest) {
+    public String register(ReqSignup signUpReq) {
         // Check username, email existed
-        if (userRepository.existsByUsername(signUpRequest.getUsername())) {
-            throw new BusinessException(MessageCode.Error.code5000, null);
+        if (userRepository.existsByUsername(signUpReq.getUsername())) {
+            throw new CommonException(MessageCode.Error.C5000, null);
         }
 
-        if (userRepository.existsByEmail(signUpRequest.getEmail())) {
-            throw new BusinessException(MessageCode.Error.code5001, null);
+        if (userRepository.existsByEmail(signUpReq.getEmail())) {
+            throw new CommonException(MessageCode.Error.C5001, null);
         }
 
-        User user = objectMapper.convertValue(signUpRequest, User.class);
+        User user = objectMapper.convertValue(signUpReq, User.class);
 
         Set<Role> roles = signupProperties.getDefaultRoles().stream()
                 .map(r -> roleRepository.findByName(r)
-                        .orElseThrow(() -> new BusinessException(MessageCode.Error.code5002, null)))
+                        .orElseThrow(() -> new CommonException(MessageCode.Error.C5002, null)))
                 .collect(Collectors.toSet());
         user.setRoles(roles);
 
@@ -81,13 +81,13 @@ public class VerifyTokenServiceImpl implements VerifyTokenService {
     public boolean verifyRegister(String token) {
 
         VerifyToken verifyToken = verifyTokenRepository.findByVerifyToken(token)
-                .orElseThrow(() -> new BusinessException(MessageCode.Error.code5004, null));
+                .orElseThrow(() -> new CommonException(MessageCode.Error.C5004, null));
 
         LocalDateTime localDateTime = LocalDateTime.now();
         if (localDateTime.isAfter(verifyToken.getExpired())) {
             verifyTokenRepository.delete(verifyToken);
             logger.error("verifyRegister token expired: " + token);
-            throw new BusinessException(MessageCode.Error.code5005, null);
+            throw new CommonException(MessageCode.Error.C5005, null);
         }
 
         User user = verifyToken.getUser();
@@ -103,7 +103,7 @@ public class VerifyTokenServiceImpl implements VerifyTokenService {
     @Override
     public String resetPassword(String email) {
         User user = userRepository.findByEmailAndEnable(email, true)
-                .orElseThrow(() -> new BusinessException(MessageCode.Error.code5001, null));
+                .orElseThrow(() -> new CommonException(MessageCode.Error.C5003, null));
         //Save verify
         VerifyToken verifyToken = new VerifyToken(user);
         LocalDateTime localDateTime = LocalDateTime.now().plusHours(rsPasswordProp.getExpirationHours());
@@ -116,25 +116,25 @@ public class VerifyTokenServiceImpl implements VerifyTokenService {
     }
 
     @Override
-    public boolean verifyResetPassword(ResetPasswordRequest resetPasswordRequest) {
-        String token = resetPasswordRequest.getToken();
-        String oldPass = resetPasswordRequest.getOldPassword();
-        String newPass = resetPasswordRequest.getNewPassword();
+    public boolean verifyResetPassword(ReqVerifyResetPass reqVerifyResetPass) {
+        String token = reqVerifyResetPass.getToken();
+        String oldPass = reqVerifyResetPass.getOldPassword();
+        String newPass = reqVerifyResetPass.getNewPassword();
 
         VerifyToken verifyToken = verifyTokenRepository.findByVerifyToken(token)
-                .orElseThrow(() -> new BusinessException(MessageCode.Error.code5006, null));
+                .orElseThrow(() -> new CommonException(MessageCode.Error.C5006, null));
 
         LocalDateTime localDateTime = LocalDateTime.now();
         if (localDateTime.isAfter(verifyToken.getExpired())) {
             verifyTokenRepository.delete(verifyToken);
             logger.error("token reset password expired: " + token);
-            throw new BusinessException(MessageCode.Error.code5007, null);
+            throw new CommonException(MessageCode.Error.C5007, null);
         }
 
         User user = verifyToken.getUser();
         if (!user.getPassword().equals(encoder.encode(oldPass))) {
             logger.error("old password invalid: ");
-            throw new BusinessException(MessageCode.Error.code5007, null);
+            throw new CommonException(MessageCode.Error.C5007, null);
         }
 
         user.setPassword(encoder.encode(newPass));

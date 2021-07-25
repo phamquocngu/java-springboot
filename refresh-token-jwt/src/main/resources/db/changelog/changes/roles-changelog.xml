@@ -8,15 +8,15 @@
     <changeSet author="admin" id="1">
         <insert tableName="roles">
             <column name="id" valueNumeric="1"/>
-            <column name="name" value="ROLE_ADMIN"/>
+            <column name="name" value="ADMIN"/>
         </insert>
         <insert tableName="roles">
             <column name="id" valueNumeric="2"/>
-            <column name="name" value="ROLE_MODERATOR"/>
+            <column name="name" value="MODERATOR"/>
         </insert>
         <insert tableName="roles">
             <column name="id" valueNumeric="3"/>
-            <column name="name" value="ROLE_USER"/>
+            <column name="name" value="USER"/>
         </insert>
     </changeSet>
 </databaseChangeLog>

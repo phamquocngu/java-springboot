@@ -1,10 +1,10 @@
-package io.marklove.spring.security.jwt.payloads.requests;
+package io.marklove.spring.security.jwt.payloads.requests.security;
 
 import io.marklove.spring.security.jwt.constants.ValidationCode;
 
 import javax.validation.constraints.NotBlank;
 
-public class TokenRefreshRequest {
+public class ReqTokenRefresh {
   @NotBlank(message = ValidationCode.VALIDATED_BLANK)
   private String refreshToken;
 

@@ -2,13 +2,12 @@ package io.marklove.spring.security.jwt.controllers.security;
 
 import io.marklove.spring.security.jwt.constants.ApiUrls;
 import io.marklove.spring.security.jwt.constants.MessageCode;
-import io.marklove.spring.security.jwt.exceptions.BusinessException;
-import io.marklove.spring.security.jwt.payloads.requests.CreateUserRequest;
-import io.marklove.spring.security.jwt.payloads.responses.ErrorResponse;
-import io.marklove.spring.security.jwt.payloads.responses.ValidatedErrorResponse;
+import io.marklove.spring.security.jwt.enums.ERole;
+import io.marklove.spring.security.jwt.exceptions.CommonException;
+import io.marklove.spring.security.jwt.payloads.requests.security.ReqCreateUser;
+import io.marklove.spring.security.jwt.payloads.responses.error.ErrorResponse;
 import io.marklove.spring.security.jwt.persistences.entities.Role;
 import io.marklove.spring.security.jwt.persistences.entities.User;
-import io.marklove.spring.security.jwt.enums.ERole;
 import io.marklove.spring.security.jwt.persistences.repository.RoleRepository;
 import io.marklove.spring.security.jwt.persistences.repository.UserRepository;
 import io.swagger.v3.oas.annotations.Operation;
@@ -18,6 +17,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -46,64 +46,66 @@ public class AdminController {
     @PostMapping(ApiUrls.CREATE_USER)
     @Operation(summary = "create new a user")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Success", content = {@Content()}),
-            @ApiResponse(responseCode = "403", description = "Forbidden", content =
-                @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))),
-            @ApiResponse(responseCode = "417", description = "Bad request", content =
-                @Content(mediaType = "application/json", schema = @Schema(implementation = ValidatedErrorResponse.class))),
-            @ApiResponse(responseCode = "500", description = "Internal server error", content = {
-                @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))})})
-    public ResponseEntity<?> createUser(@Valid @RequestBody CreateUserRequest signUpRequest) throws Exception {
-        if (userRepository.existsByUsername(signUpRequest.getUsername())) {
-            throw new BusinessException(MessageCode.Error.code5000, null);
+        @ApiResponse(responseCode = "200", description = "Success", content = {@Content()}),
+        @ApiResponse(responseCode = "401", description = "Unauthorized", content = {
+            @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = ErrorResponse.class))}),
+        @ApiResponse(responseCode = "403", description = "Forbidden", content = {
+            @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = ErrorResponse.class))}),
+        @ApiResponse(responseCode = "417", description = "Bad request", content = {
+            @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))}),
+        @ApiResponse(responseCode = "500", description = "Internal server error", content = {
+            @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))})})
+    public ResponseEntity<User> createUser(@Valid @RequestBody ReqCreateUser reqCreateUser) {
+
+        if (userRepository.existsByUsername(reqCreateUser.getUsername())) {
+            throw new CommonException(MessageCode.Error.C5000, null);
         }
 
-        if (userRepository.existsByEmail(signUpRequest.getEmail())) {
-            throw new BusinessException(MessageCode.Error.code5001, null);
+        if (userRepository.existsByEmail(reqCreateUser.getEmail())) {
+            throw new CommonException(MessageCode.Error.C5001, null);
         }
 
         // Create new user's account
-        User user = new User(signUpRequest.getUsername(),
-                signUpRequest.getEmail(),
-                encoder.encode(signUpRequest.getPassword()),
-                signUpRequest.getEnable() == null ? true : signUpRequest.getEnable(),
-                signUpRequest.getAccountExpired() == null ? false : signUpRequest.getAccountExpired(),
-                signUpRequest.getAccountLocked() == null ? false : signUpRequest.getAccountLocked(),
-                signUpRequest.getCredentialsExpired() == null ? false : signUpRequest.getCredentialsExpired());
+        User user = new User(reqCreateUser.getUsername(),
+            reqCreateUser.getEmail(),
+            encoder.encode(reqCreateUser.getPassword()),
+            reqCreateUser.getEnable() == null ? true : reqCreateUser.getEnable(),
+            reqCreateUser.getAccountExpired() == null ? false : reqCreateUser.getAccountExpired(),
+            reqCreateUser.getAccountLocked() == null ? false : reqCreateUser.getAccountLocked(),
+            reqCreateUser.getCredentialsExpired() == null ? false : reqCreateUser.getCredentialsExpired());
 
-        Set<ERole> strRoles = signUpRequest.getRole();
+        Set<ERole> strRoles = reqCreateUser.getRole();
         Set<Role> roles = new HashSet<>();
 
         if (strRoles == null) {
             Role userRole = roleRepository.findByName(ERole.USER)
-                    .orElseThrow(() -> new BusinessException(MessageCode.Error.code5002, null));
+                .orElseThrow(() -> new CommonException(MessageCode.Error.C5002, null));
             roles.add(userRole);
         } else {
             strRoles.forEach(role -> {
                 switch (role) {
                     case ADMIN:
                         Role adminRole = roleRepository.findByName(ERole.ADMIN)
-                                .orElseThrow(() -> new BusinessException(MessageCode.Error.code5002, null));
+                            .orElseThrow(() -> new CommonException(MessageCode.Error.C5002, null));
                         roles.add(adminRole);
 
                         break;
                     case MODERATOR:
                         Role modRole = roleRepository.findByName(ERole.MODERATOR)
-                                .orElseThrow(() -> new BusinessException(MessageCode.Error.code5002, null));
+                            .orElseThrow(() -> new CommonException(MessageCode.Error.C5002, null));
                         roles.add(modRole);
 
                         break;
                     default:
                         Role userRole = roleRepository.findByName(ERole.USER)
-                                .orElseThrow(() -> new BusinessException(MessageCode.Error.code5002, null));
+                            .orElseThrow(() -> new CommonException(MessageCode.Error.C5002, null));
                         roles.add(userRole);
                 }
             });
         }
 
         user.setRoles(roles);
-        userRepository.save(user);
 
-        return ResponseEntity.ok(null);
+        return ResponseEntity.ok(userRepository.save(user));
     }
 }

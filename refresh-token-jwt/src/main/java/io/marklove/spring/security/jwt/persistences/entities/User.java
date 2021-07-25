@@ -28,7 +28,6 @@ public class User extends BaseEntity {
 	@Email
 	private String email;
 	@NotBlank
-	@Size(max = 50)
 	private String password;
 	private Boolean enable;
 	private Boolean accountLocked;

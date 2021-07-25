@@ -5,12 +5,14 @@ import io.marklove.spring.security.jwt.persistences.entities.User;
 import io.marklove.spring.security.jwt.enums.ERole;
 import io.marklove.spring.security.jwt.persistences.repository.RoleRepository;
 import io.marklove.spring.security.jwt.persistences.repository.UserRepository;
+import io.marklove.spring.security.jwt.validations.MessageInterpolatorImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import javax.validation.Validation;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -19,6 +21,11 @@ public class JwtApplication implements CommandLineRunner {
 
 	public static void main(String[] args) {
 		SpringApplication.run(JwtApplication.class, args);
+
+		Validation.byDefaultProvider().configure().messageInterpolator(
+				new MessageInterpolatorImpl(
+						Validation.byDefaultProvider().configure().getDefaultMessageInterpolator())
+		);
 	}
 
 	@Autowired
