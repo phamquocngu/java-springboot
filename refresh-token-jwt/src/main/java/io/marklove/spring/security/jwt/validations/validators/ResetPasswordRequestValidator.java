@@ -12,7 +12,7 @@ import javax.validation.ConstraintValidatorContext;
  */
 public class ResetPasswordRequestValidator implements ConstraintValidator<ResetPassword, ReqVerifyResetPass> {
 
-    private static final String NEW_PASSWORD = "newPassword";
+    private static final String NEW_PASSWORD = "new-password";
 
     @Override
     public boolean isValid(ReqVerifyResetPass value, ConstraintValidatorContext context) {
