@@ -1,7 +1,7 @@
 package io.marklove.spring.security.jwt.controllers.security;
 
 import io.marklove.spring.security.jwt.constants.ApiUrls;
-import io.marklove.spring.security.jwt.payloads.requests.security.ReqLogOut;
+import io.marklove.spring.security.jwt.payloads.requests.security.LogOutReq;
 import io.marklove.spring.security.jwt.payloads.responses.error.ErrorResponse;
 import io.marklove.spring.security.jwt.services.RefreshTokenService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -39,7 +39,7 @@ public class UserController {
             @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))}),
         @ApiResponse(responseCode = "500", description = "Internal server error", content = {
             @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))})})
-    public ResponseEntity<?> logout(@Valid @RequestBody ReqLogOut logOutRequest) {
+    public ResponseEntity<?> logout(@Valid @RequestBody LogOutReq logOutRequest) {
         refreshTokenService.deleteByUserId(logOutRequest.getUserId());
         return ResponseEntity.ok(null);
     }

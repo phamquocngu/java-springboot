@@ -1,5 +1,8 @@
 package io.marklove.spring.security.jwt.persistences.entities;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -17,6 +20,8 @@ import javax.validation.constraints.Size;
 			@UniqueConstraint(columnNames = "username"),
 			@UniqueConstraint(columnNames = "email") 
 		})
+@Getter
+@Setter
 public class User extends BaseEntity {
 	private static final long serialVersionUID = 1L;
 
@@ -51,69 +56,5 @@ public class User extends BaseEntity {
 		this.accountLocked = accountLocked;
 		this.credentialsExpired = credentialsExpired;
 
-	}
-
-	public String getUsername() {
-		return username;
-	}
-
-	public void setUsername(String username) {
-		this.username = username;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
-	public Set<Role> getRoles() {
-		return roles;
-	}
-
-	public void setRoles(Set<Role> roles) {
-		this.roles = roles;
-	}
-
-	public Boolean getEnable() {
-		return enable;
-	}
-
-	public void setEnable(Boolean enable) {
-		this.enable = enable;
-	}
-
-	public Boolean getAccountLocked() {
-		return accountLocked;
-	}
-
-	public void setAccountLocked(Boolean accountLocked) {
-		this.accountLocked = accountLocked;
-	}
-
-	public Boolean getAccountExpired() {
-		return accountExpired;
-	}
-
-	public void setAccountExpired(Boolean accountExpired) {
-		this.accountExpired = accountExpired;
-	}
-
-	public Boolean getCredentialsExpired() {
-		return credentialsExpired;
-	}
-
-	public void setCredentialsExpired(Boolean credentialsExpired) {
-		this.credentialsExpired = credentialsExpired;
 	}
 }

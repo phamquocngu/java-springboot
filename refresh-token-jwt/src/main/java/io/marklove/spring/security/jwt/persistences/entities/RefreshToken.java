@@ -1,5 +1,8 @@
 package io.marklove.spring.security.jwt.persistences.entities;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.time.Instant;
 
 import javax.persistence.*;
@@ -9,6 +12,8 @@ import javax.persistence.*;
  */
 @Table(name = "refresh_token")
 @Entity
+@Getter
+@Setter
 public class RefreshToken extends BaseEntity {
   private static final long serialVersionUID = 1L;
 
@@ -19,32 +24,4 @@ public class RefreshToken extends BaseEntity {
   private String token;
   @Column(nullable = false)
   private Instant expiryDate;
-
-  public RefreshToken() {
-  }
-
-  public User getUser() {
-    return user;
-  }
-
-  public void setUser(User user) {
-    this.user = user;
-  }
-
-  public String getToken() {
-    return token;
-  }
-
-  public void setToken(String token) {
-    this.token = token;
-  }
-
-  public Instant getExpiryDate() {
-    return expiryDate;
-  }
-
-  public void setExpiryDate(Instant expiryDate) {
-    this.expiryDate = expiryDate;
-  }
-
 }

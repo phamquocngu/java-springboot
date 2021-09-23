@@ -4,7 +4,7 @@ import io.marklove.spring.security.jwt.constants.ApiUrls;
 import io.marklove.spring.security.jwt.constants.MessageCode;
 import io.marklove.spring.security.jwt.enums.ERole;
 import io.marklove.spring.security.jwt.exceptions.CommonException;
-import io.marklove.spring.security.jwt.payloads.requests.security.ReqCreateUser;
+import io.marklove.spring.security.jwt.payloads.requests.security.CreateUserReq;
 import io.marklove.spring.security.jwt.payloads.responses.error.ErrorResponse;
 import io.marklove.spring.security.jwt.persistences.entities.Role;
 import io.marklove.spring.security.jwt.persistences.entities.User;
@@ -55,26 +55,26 @@ public class AdminController {
             @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))}),
         @ApiResponse(responseCode = "500", description = "Internal server error", content = {
             @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))})})
-    public ResponseEntity<User> createUser(@Valid @RequestBody ReqCreateUser reqCreateUser) {
+    public ResponseEntity<User> createUser(@Valid @RequestBody CreateUserReq createUserReq) {
 
-        if (userRepository.existsByUsername(reqCreateUser.getUsername())) {
+        if (userRepository.existsByUsername(createUserReq.getUsername())) {
             throw new CommonException(MessageCode.Error.C5000, null);
         }
 
-        if (userRepository.existsByEmail(reqCreateUser.getEmail())) {
+        if (userRepository.existsByEmail(createUserReq.getEmail())) {
             throw new CommonException(MessageCode.Error.C5001, null);
         }
 
         // Create new user's account
-        User user = new User(reqCreateUser.getUsername(),
-            reqCreateUser.getEmail(),
-            encoder.encode(reqCreateUser.getPassword()),
-            reqCreateUser.getEnable() == null ? true : reqCreateUser.getEnable(),
-            reqCreateUser.getAccountExpired() == null ? false : reqCreateUser.getAccountExpired(),
-            reqCreateUser.getAccountLocked() == null ? false : reqCreateUser.getAccountLocked(),
-            reqCreateUser.getCredentialsExpired() == null ? false : reqCreateUser.getCredentialsExpired());
+        User user = new User(createUserReq.getUsername(),
+            createUserReq.getEmail(),
+            encoder.encode(createUserReq.getPassword()),
+            createUserReq.getEnable() == null ? true : createUserReq.getEnable(),
+            createUserReq.getAccountExpired() == null ? false : createUserReq.getAccountExpired(),
+            createUserReq.getAccountLocked() == null ? false : createUserReq.getAccountLocked(),
+            createUserReq.getCredentialsExpired() == null ? false : createUserReq.getCredentialsExpired());
 
-        Set<ERole> strRoles = reqCreateUser.getRole();
+        Set<ERole> strRoles = createUserReq.getRole();
         Set<Role> roles = new HashSet<>();
 
         if (strRoles == null) {

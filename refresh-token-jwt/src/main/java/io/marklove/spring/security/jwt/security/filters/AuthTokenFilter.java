@@ -1,5 +1,7 @@
 package io.marklove.spring.security.jwt.security.filters;
 
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
 import io.marklove.spring.security.jwt.security.JwtUtils;
 import io.marklove.spring.security.jwt.security.service.UserDetailsServiceImpl;
 import io.marklove.spring.security.jwt.utils.GetMessageService;
@@ -34,8 +36,9 @@ public class AuthTokenFilter extends OncePerRequestFilter {
                                   FilterChain filterChain) throws ServletException, IOException {
     try {
       String jwt = parseJwt(request);
-      if (jwt != null && jwtUtils.validateJwtToken(jwt, request)) {
-        String username = jwtUtils.getUserNameFromJwtToken(jwt);
+      if (jwt != null) {
+        Jws<Claims> jws = jwtUtils.parseToken(jwt);
+        String username = jws.getBody().getSubject();
 
         UserDetails userDetails = userDetailsService.loadUserByUsername(username);
         UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(

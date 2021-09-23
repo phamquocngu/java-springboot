@@ -1,7 +1,10 @@
 package io.marklove.spring.security.jwt.payloads.responses.error;
 
+import lombok.Getter;
+
 import java.time.LocalDateTime;
 
+@Getter
 public class ErrorResponse {
   private String code;
   private String message;
@@ -20,21 +23,5 @@ public class ErrorResponse {
     this.dateTime = dateTime;
     this.message = message;
     this.detail = detail;
-  }
-
-  public String getCode() {
-    return code;
-  }
-
-  public String getMessage() {
-    return message;
-  }
-
-  public Object getDetail() {
-    return detail;
-  }
-
-  public LocalDateTime getDateTime() {
-    return dateTime;
   }
 }

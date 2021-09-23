@@ -27,7 +27,7 @@ public class OpenAPIConfiguration {
 
     @Bean
     public GroupedOpenApi securityOpenApi() {
-        String paths[] = { ApiUrls.AUTH + ApiUrls.PATTERN_ALL,
+        String paths[] = { ApiUrls.SIGN_IN + ApiUrls.PATTERN_ALL,
                 ApiUrls.SIGN_UP + ApiUrls.PATTERN_ALL,
                 ApiUrls.RESET_PASS + ApiUrls.PATTERN_ALL,
                 ApiUrls.USER + ApiUrls.PATTERN_ALL};

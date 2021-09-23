@@ -34,19 +34,22 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             "/swagger-ui/**",
             "/api-docs/**",
             //--APIs
-            ApiUrls.AUTH + ApiUrls.PATTERN_ALL,
+            ApiUrls.SIGN_IN + ApiUrls.PATTERN_ALL,
             ApiUrls.SIGN_UP + ApiUrls.PATTERN_ALL,
             ApiUrls.RESET_PASS + ApiUrls.PATTERN_ALL
     };
 
     @Autowired
     private UserDetailsServiceImpl userDetailsService;
+
     @Autowired
     private AuthEntryPoint unauthorizedHandler;
+
     @Bean
     public AuthTokenFilter authenticationJwtTokenFilter() {
         return new AuthTokenFilter();
     }
+
     @Bean
     public CORSFilter cORSFilter() {
         return new CORSFilter();

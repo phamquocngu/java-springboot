@@ -1,10 +1,10 @@
 package io.marklove.spring.security.jwt.controllers.security;
 
 import io.marklove.spring.security.jwt.constants.ApiUrls;
-import io.marklove.spring.security.jwt.payloads.requests.security.ReqResetPass;
-import io.marklove.spring.security.jwt.payloads.requests.security.ReqVerifyResetPass;
+import io.marklove.spring.security.jwt.payloads.requests.security.ResetPassReq;
+import io.marklove.spring.security.jwt.payloads.requests.security.VerifyResetPassReq;
 import io.marklove.spring.security.jwt.payloads.responses.error.ErrorResponse;
-import io.marklove.spring.security.jwt.payloads.responses.security.ResTokenVerify;
+import io.marklove.spring.security.jwt.payloads.responses.security.TokenVerifyRes;
 import io.marklove.spring.security.jwt.services.VerifyTokenService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -32,15 +32,15 @@ public class ResetPassController {
     @Operation(summary = "reset password: return a token to send email verify")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "success", content = {
-            @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = ResTokenVerify.class))}),
+            @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = TokenVerifyRes.class))}),
         @ApiResponse(responseCode = "417", description = "Bad Request", content = {
             @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = ErrorResponse.class))}),
         @ApiResponse(responseCode = "500", description = "Internal server error", content = {
             @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = ErrorResponse.class))})})
-    public ResponseEntity<?> rsPassword(@Validated @RequestParam(required = true, value = "email") ReqResetPass email) {
+    public ResponseEntity<?> rsPassword(@Validated @RequestParam(required = true, value = "email") ResetPassReq email) {
         String token = verifyTokenService.resetPassword(email.getEmail());
 
-        return ResponseEntity.ok(new ResTokenVerify(token));
+        return ResponseEntity.ok(new TokenVerifyRes(token));
     }
 
     @PutMapping(ApiUrls.VERIFY)
@@ -51,9 +51,9 @@ public class ResetPassController {
             @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = ErrorResponse.class))}),
         @ApiResponse(responseCode = "500", description = "Internal server error", content = {
             @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = ErrorResponse.class))})})
-    public ResponseEntity<?> verifyRsPassword(@Validated @RequestBody ReqVerifyResetPass reqVerifyResetPass) {
+    public ResponseEntity<?> verifyRsPassword(@Validated @RequestBody VerifyResetPassReq verifyResetPassReq) {
 
-        verifyTokenService.verifyResetPassword(reqVerifyResetPass);
+        verifyTokenService.verifyResetPassword(verifyResetPassReq);
 
         return ResponseEntity.ok(null);
     }

@@ -1,8 +1,13 @@
 package io.marklove.spring.security.jwt.payloads.responses.error;
 
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  * @author ngupq
  */
+@Getter
+@Setter
 public class BaseValidatedError {
     private String code;
     private String field;
@@ -11,30 +16,6 @@ public class BaseValidatedError {
     public BaseValidatedError(String code, String field, String error) {
         this.code = code;
         this.field = field;
-        this.error = error;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
-    }
-
-    public String getField() {
-        return field;
-    }
-
-    public void setField(String field) {
-        this.field = field;
-    }
-
-    public String getError() {
-        return error;
-    }
-
-    public void setError(String error) {
         this.error = error;
     }
 }

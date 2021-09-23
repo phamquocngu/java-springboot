@@ -27,7 +27,7 @@ public class AdviceController {
     private GetMessageServiceImpl messageService;
 
     @ExceptionHandler(value = TokenRefreshException.class)
-    @ResponseStatus(HttpStatus.FORBIDDEN)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
     public ErrorResponse handleTokenRefreshException(TokenRefreshException ex) {
 
         return new ErrorResponse(ex.getCode(),

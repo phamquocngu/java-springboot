@@ -5,10 +5,8 @@ package io.marklove.spring.security.jwt.constants;
  */
 public class ApiUrls {
     public static final String PATTERN_ALL = "/**";
-    // security APIs
-    public static final String AUTH = "/api/auth";
-    public static final String SIGN_IN = "/sign-in";
-    public static final String REFRESH_TOKEN = "/refresh-token";
+    /** security APIs **/
+    public static final String SIGN_IN = "/api/sign-in";
     public static final String ADMIN = "/api/admin";
     public static final String CREATE_USER = "/create-user";
     public static final String USER = "/api/user";

@@ -45,6 +45,13 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
         return refreshToken;
     }
 
+    public RefreshToken resetRefreshToken(RefreshToken refreshToken) {
+        refreshToken.setExpiryDate(Instant.now().plusMillis(jwtProps.getRefreshExpirationMs()));
+        refreshToken.setToken(UUID.randomUUID().toString());
+
+        return refreshTokenRepository.save(refreshToken);
+    }
+
     public RefreshToken verifyExpiration(RefreshToken token) {
         if (token.getExpiryDate().compareTo(Instant.now()) < 0) {
             refreshTokenRepository.delete(token);

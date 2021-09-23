@@ -1,6 +1,8 @@
 package io.marklove.spring.security.jwt.persistences.entities;
 
 import io.marklove.spring.security.jwt.enums.ERole;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 
@@ -9,24 +11,12 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "roles")
+@Getter
+@Setter
 public class Role extends BaseEntity {
 	private static final long serialVersionUID = 1L;
 
 	@Enumerated(EnumType.STRING)
 	@Column(length = 20)
 	private ERole name;
-
-	public Role() {}
-
-	public Role(ERole name) {
-		this.name = name;
-	}
-
-	public ERole getName() {
-		return name;
-	}
-
-	public void setName(ERole name) {
-		this.name = name;
-	}
 }

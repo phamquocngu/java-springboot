@@ -1,10 +1,10 @@
 package io.marklove.spring.security.jwt.controllers.security;
 
 import io.marklove.spring.security.jwt.constants.ApiUrls;
-import io.marklove.spring.security.jwt.payloads.requests.security.ReqSignup;
-import io.marklove.spring.security.jwt.payloads.requests.security.ReqVerifySignup;
+import io.marklove.spring.security.jwt.payloads.requests.security.SignupReq;
+import io.marklove.spring.security.jwt.payloads.requests.security.VerifySignupReq;
 import io.marklove.spring.security.jwt.payloads.responses.error.ErrorResponse;
-import io.marklove.spring.security.jwt.payloads.responses.security.ResTokenVerify;
+import io.marklove.spring.security.jwt.payloads.responses.security.TokenVerifyRes;
 import io.marklove.spring.security.jwt.services.VerifyTokenService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -33,27 +33,27 @@ public class SignUpController {
     @Operation(summary = "register: return a token to send email verify")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "Success", content = {
-            @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = ResTokenVerify.class))}),
+            @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = TokenVerifyRes.class))}),
         @ApiResponse(responseCode = "417", description = "Bad request", content = {
             @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = ErrorResponse.class))}),
         @ApiResponse(responseCode = "500", description = "Internal server error", content = {
             @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = ErrorResponse.class))})})
-    public ResponseEntity<?> registerUser(@Valid @RequestBody ReqSignup reqSignup) {
+    public ResponseEntity<?> registerUser(@Valid @RequestBody SignupReq signupReq) {
 
-        String token = verifyTokenService.register(reqSignup);
+        String token = verifyTokenService.register(signupReq);
 
-        return ResponseEntity.ok(new ResTokenVerify(token));
+        return ResponseEntity.ok(new TokenVerifyRes(token));
     }
 
     @PutMapping(ApiUrls.VERIFY)
     @Operation(summary = "verify register by token")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "success", content = {@Content()}),
+        @ApiResponse(responseCode = "200", description = "Success", content = {@Content()}),
         @ApiResponse(responseCode = "417", description = "Bad request", content = {
             @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = ErrorResponse.class))}),
         @ApiResponse(responseCode = "500", description = "Internal server error", content = {
             @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = ErrorResponse.class))})})
-    public ResponseEntity<?> verifyRegister(@Valid @RequestParam(required = true, value = "token") ReqVerifySignup token) {
+    public ResponseEntity<?> verifyRegister(@Valid @RequestParam(required = true, value = "token") VerifySignupReq token) {
 
         verifyTokenService.verifyRegister(token.getToken());
 

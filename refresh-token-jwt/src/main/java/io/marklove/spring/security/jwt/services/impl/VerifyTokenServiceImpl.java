@@ -5,8 +5,8 @@ import io.marklove.spring.security.jwt.configurations.ResetPasswordProperties;
 import io.marklove.spring.security.jwt.configurations.SignupProperties;
 import io.marklove.spring.security.jwt.constants.MessageCode;
 import io.marklove.spring.security.jwt.exceptions.CommonException;
-import io.marklove.spring.security.jwt.payloads.requests.security.ReqVerifyResetPass;
-import io.marklove.spring.security.jwt.payloads.requests.security.ReqSignup;
+import io.marklove.spring.security.jwt.payloads.requests.security.VerifyResetPassReq;
+import io.marklove.spring.security.jwt.payloads.requests.security.SignupReq;
 import io.marklove.spring.security.jwt.persistences.entities.Role;
 import io.marklove.spring.security.jwt.persistences.entities.User;
 import io.marklove.spring.security.jwt.persistences.entities.VerifyToken;
@@ -47,7 +47,7 @@ public class VerifyTokenServiceImpl implements VerifyTokenService {
     private ObjectMapper objectMapper = new ObjectMapper();
 
     @Override
-    public String register(ReqSignup signUpReq) {
+    public String register(SignupReq signUpReq) {
         // Check username, email existed
         if (userRepository.existsByUsername(signUpReq.getUsername())) {
             throw new CommonException(MessageCode.Error.C5000, null);
@@ -116,10 +116,10 @@ public class VerifyTokenServiceImpl implements VerifyTokenService {
     }
 
     @Override
-    public boolean verifyResetPassword(ReqVerifyResetPass reqVerifyResetPass) {
-        String token = reqVerifyResetPass.getToken();
-        String oldPass = reqVerifyResetPass.getOldPassword();
-        String newPass = reqVerifyResetPass.getNewPassword();
+    public boolean verifyResetPassword(VerifyResetPassReq verifyResetPassReq) {
+        String token = verifyResetPassReq.getToken();
+        String oldPass = verifyResetPassReq.getOldPassword();
+        String newPass = verifyResetPassReq.getNewPassword();
 
         VerifyToken verifyToken = verifyTokenRepository.findByVerifyToken(token)
                 .orElseThrow(() -> new CommonException(MessageCode.Error.C5006, null));
