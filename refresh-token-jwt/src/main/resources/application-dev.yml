@@ -1,0 +1,60 @@
+server:
+  port: 8005
+####Spring configuration####
+spring:
+  banner:
+    location: classpath:banner.txt
+  application:
+    name: user-service
+  datasource:
+    url: jdbc:mysql://localhost:3306/testdb?serverTimezone=UTC&allowPublicKeyRetrieval=true&useSSL=false&characterEncoding=UTF-8
+    username: root
+    password: 123456
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    initialization-mode: always
+    hikari:
+      connectionTimeout: 30000
+      idleTimeout: 600000
+      maxLifetime: 1800000
+      minimum-idle: 5
+      maximum-pool-size: 5
+  jpa:
+    hibernate:
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+      ddl-auto: update
+    properties:
+      hibernate:
+        show_sql: false
+        format_sql: true 
+  jackson:
+    serialization:
+      fail-on-empty-beans: false
+##Liquibase configuration##
+  liquibase:
+    change-log: classpath:/db/changelog/changelog-master.xml
+####App properties####
+app:
+  jwt:
+    secretKey: markloveSecretKey
+    #expirationMs= 3600000
+    #refreshExpirationMs= 86400000
+    ##For test
+    expirationMs: 3600000
+    refreshExpirationMs: 86400000
+  signup:
+    defaultRoles:
+      - USER
+    expirationHours: 24
+  reset-password:
+    expirationHours: 24
+###### Spring doc ######
+springdoc:
+  version: @springdoc.version@
+  # custom path for swagger-ui
+  swagger-ui:
+    path: swagger-ui.html
+    operationsSorter: method
+  # custom path for api docs
+  api-docs:
+    path: api-docs
