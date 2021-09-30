@@ -1,14 +1,37 @@
-spring:
-  rabbitmq:
+#spring:
+#  rabbitmq:
+#    host: localhost
+#    port: 5672
+#    username: myuser
+#    password: mypassword
+#producer:
+#  rabbitmq:
+#    exchange: marklove.exchange.logs
+#consumer:
+#  rabbitmq:
+#    queue1: sys.dev.info
+#    queue2: sys.test.error
+#    queue3: app.prod.error
+app.settings:
+  indentJson: true
+  rabbit:
     host: localhost
     port: 5672
-    username: myuser
-    password: mypassword
-producer:
-  rabbitmq:
-    exchange: marklove.exchange.logs
-consumer:
-  rabbitmq:
-    queue1: sys.dev.info
-    queue2: sys.test.error
-    queue3: app.prod.error
+    user: myuser
+    pass: mypassword
+
+    exchange: chat.E.fanout.dev.Message
+    queue: chat.Q.dev.MessageSubscriber.Message
+
+    maxConnections: 10
+    maxConcurrentConsumers: 5
+
+spring:
+  profiles.active: cli
+
+logging:
+  level:
+    org.springframework.amqp.rabbit.core.RabbitTemplate: INFO
+    com.mintbeans.chat.service:
+      MessagePublisher: DEBUG
+      MessageSubscriber: DEBUG
