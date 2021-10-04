@@ -19,34 +19,37 @@ spring:
       client:
         registration:
           google:
-            clientId:
-            clientSecret: 
+            clientId: 175870518277-3a23cmk0ajkkeib6lofpg031m170s96a.apps.googleusercontent.com
+            clientSecret: Xkckrdwyx9ERKuYTdwd5K7ZE
             redirectUri: "{baseUrl}/oauth2/callback/{registrationId}"
             scope:
               - email
               - profile
           facebook:
-            clientId:
-            clientSecret:
-            redirectUri: "{baseUrl}/oauth2/callback/{registrationId}"
+            clientId: 2937624989832537
+            clientSecret: 59d404e5f143f559ba8f263115b53413
+            redirectUri: "https:localhost:8080/oauth2/callback/{registrationId}"
             scope:
               - email
               - public_profile
           github:
-            clientId:
-            clientSecret:
+            clientId: markloveSecretAAXADFAFAFFAFFFFA
+            clientSecret: markloveSecretAAXADFAFAFFAFFFFA
             redirectUri: "{baseUrl}/oauth2/callback/{registrationId}"
             scope:
               - user:email
               - read:user
         provider:
+          google:
+            authorizationUri: https://accounts.google.com/o/oauth2/auth
+            tokenUri: https://accounts.google.com/o/oauth2/token
           facebook:
-            authorizationUri: https://www.facebook.com/v3.0/dialog/oauth
-            tokenUri: https://graph.facebook.com/v3.0/oauth/access_token
-            userInfoUri: https://graph.facebook.com/v3.0/me?fields=id,first_name,middle_name,last_name,name,email,verified,is_verified,picture.width(250).height(250)
+            authorizationUri: https://www.facebook.com/v11.0/dialog/oauth
+            tokenUri: https://graph.facebook.com/v11.0/oauth/access_token
+            userInfoUri: https://graph.facebook.com/v11.0/me?fields=id,first_name,middle_name,last_name,name,email,verified,is_verified,picture.width(250).height(250)
 app:
   auth:
-    tokenSecret: markloveSecretAAXADFAFAFFAFFFFA
+    tokenSecret: markloveSecretAAXADFAFAFFAFFFFAasds231324224
     tokenExpirationMsec: 864000000
   oauth2:
     # After successfully authenticating with the OAuth2 Provider,
