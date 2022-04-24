@@ -3,20 +3,23 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<groupId>org.springframework.boot</groupId>
-		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.5.2</version>
-		<relativePath/> <!-- lookup parent from repository -->
+		<groupId>io.marklove.springboot</groupId>
+		<artifactId>parent-2.5.5</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+		<relativePath>../parent-2.5.5/pom.xml</relativePath>
 	</parent>
-	<groupId>io.marklove.s3</groupId>
-	<artifactId>upload-dowload</artifactId>
+
+	<groupId>io.marklove.springboot</groupId>
+	<artifactId>upload-download</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>upload-dowload</name>
+	<name>upload-download</name>
 	<description>Demo project for Spring Boot</description>
+
 	<properties>
-		<java.version>11</java.version>
 		<spring-cloud.version>Hoxton.SR9</spring-cloud.version>
+		<commons-lang3.version>3.12.0</commons-lang3.version>
 	</properties>
+
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -34,12 +37,7 @@
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
-			<version>3.12.0</version>
-		</dependency>
-		<dependency>
-			<groupId>org.projectlombok</groupId>
-			<artifactId>lombok</artifactId>
-			<optional>true</optional>
+			<version>${commons-lang3.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
